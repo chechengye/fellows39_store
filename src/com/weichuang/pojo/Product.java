@@ -25,6 +25,9 @@ public class Product implements Serializable{
     private String pimage;
     private String pdesc;
     private int isHot;
+    private String cid;
+    private String pdate;
+    private int pflag;
 
 
     public String getPid() {
@@ -83,6 +86,30 @@ public class Product implements Serializable{
         this.isHot = isHot;
     }
 
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
+    public String getPdate() {
+        return pdate;
+    }
+
+    public void setPdate(String pdate) {
+        this.pdate = pdate;
+    }
+
+    public int getPflag() {
+        return pflag;
+    }
+
+    public void setPflag(int pflag) {
+        this.pflag = pflag;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -91,6 +118,11 @@ public class Product implements Serializable{
                 ", marketPrice='" + marketPrice + '\'' +
                 ", shopPrice='" + shopPrice + '\'' +
                 ", pimage='" + pimage + '\'' +
+                ", pdesc='" + pdesc + '\'' +
+                ", isHot=" + isHot +
+                ", cid='" + cid + '\'' +
+                ", pdate='" + pdate + '\'' +
+                ", pflag=" + pflag +
                 '}';
     }
 }

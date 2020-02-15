@@ -6,11 +6,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="${pageContext.request.contextPath}/css/Style1.css"
 	rel="stylesheet" type="text/css" />
-<script language="javascript"
-	src="${pageContext.request.contextPath}/js/public.js"></script>
+<script type="text/javascript" src="../../js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
+			//等页面全部加载完毕调用
+			$(document).ready(function () {
+                $("#is_hot option[value = ${condition.isHot}]").prop("selected",true);
+                $("#cid option[value = ${condition.cid}]").prop("selected",true);
+            });
+
 			function addProduct(){
-				window.location.href = "${pageContext.request.contextPath}/admin/product/add.jsp";
+				window.location.href = "${pageContext.request.contextPath}/adminCategoryList";
 			}
 			function confirmDelete(pid) {
 				var b = confirm("您确定要删除吗？");
@@ -24,10 +29,25 @@
 <body>
 	<br>
 	<form id="Form1" name="Form1"
-		action="${pageContext.request.contextPath}/user/list.jsp"
+		action="${pageContext.request.contextPath}/adminSearch"
 		method="post">
+		&nbsp;&nbsp;&nbsp;商品名称：<input type="text" placeholder="请输入要查询的商品" style="height: 30px; width: 150px;" name="pname" value="${condition.pname}"/>
+		&nbsp;&nbsp;&nbsp;是否热门：
+		<select name="isHot" id="is_hot" >
+			<option value="">不限</option>
+			<option value="1">是</option>
+			<option value="0">否</option>
+		</select>
+		&nbsp;&nbsp;&nbsp;所属分类：
+		<select name="cid" id="cid">
+			<option value="">不限</option>
+			<c:forEach items="${categoryList}" var="c">
+				<option value="${c.cid}">${c.cname}</option>
+			</c:forEach>
+	 	</select>
+		<input type="submit" value="搜索"/>
 		<table cellSpacing="1" cellPadding="0" width="100%" align="center"
-			bgColor="#f5fafe" border="0">
+			bgColor="#f5fafe" border="0" style="margin-top: 10px">
 			<TBODY>
 				<tr>
 					<td class="ta_01" align="center" bgColor="#afd1f3"><strong>商品列表</strong>
@@ -74,7 +94,7 @@
 										<c:if test="${p.isHot == 0}">否</c:if>
 										</td>
 									<td align="center" style="HEIGHT: 22px"><a
-											href="${ pageContext.request.contextPath }/admin/product/edit.jsp">
+											href="${ pageContext.request.contextPath }/adminEditProduct?pid=${p.pid}">
 										<img
 												src="${pageContext.request.contextPath}/images/i_edit.gif"
 												border="0" style="CURSOR: hand">
