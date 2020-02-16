@@ -5,6 +5,7 @@ import com.weichuang.pojo.Product;
 import com.weichuang.service.IProductService;
 import com.weichuang.utils.DateUtil;
 import com.weichuang.vo.Condition;
+import com.weichuang.vo.PageBean;
 
 import java.util.List;
 import java.util.UUID;
@@ -87,5 +88,21 @@ public class ProductService implements IProductService {
         //判断传递过来的参数是否为空
 
         return productDao.getProductListByCondition(condition);
+    }
+
+    @Override
+    public PageBean getPageBeanByCurrentPageAndMaxCount(String currentPage, int maxCount) {
+        PageBean pageBean = new PageBean();
+        pageBean.setCurrentPage(Integer.valueOf(currentPage));
+        pageBean.setMaxCount(maxCount);
+        int totalCount = productDao.getProductTotalCount();
+        pageBean.setTotalCount(totalCount);
+        //总页数 = 向上取整(数据库的数量 / 每页容纳的最大数量)
+        pageBean.setTotalPages((int)Math.ceil(totalCount * 1.0 / maxCount));
+        //limit 0 , 5  索引值 = (当前页 - 1) * 数量
+        int index = (Integer.valueOf(currentPage) - 1) * maxCount;
+        List<Product> productList = productDao.getProductListByIndexAndMaxCount(index , maxCount);
+        pageBean.setProductList(productList);
+        return pageBean;
     }
 }
