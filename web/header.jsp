@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,10 +12,18 @@
 	</div>
 	<div class="col-md-3" style="padding-top:20px">
 		<ol class="list-inline">
-			<li><a href="login.jsp">登录</a></li>
-			<li><a href="register.jsp">注册</a></li>
-			<li><a href="cart.jsp">购物车</a></li>
-			<li><a href="order_list.jsp">我的订单</a></li>
+			<c:if test="${user != null}">
+				<li>欢迎您,${user.name}</li>
+				<li><a href=${pageContext.request.contextPath}"/cartList?uid=${user.uid}">购物车</a></li>
+				<li><a href="order_list.jsp">我的订单</a></li>
+			</c:if>
+			<c:if test="${user == null}">
+				<li><a href="login.jsp">登录</a></li>
+				<li><a href="register.jsp">注册</a></li>
+				<li><a href="cart.jsp">购物车</a></li>
+				<li><a href="order_list.jsp">我的订单</a></li>
+			</c:if>
+
 		</ol>
 	</div>
 </div>
@@ -36,18 +45,54 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="product_list.htm">手机数码<span class="sr-only">(current)</span></a></li>
+					<li class="active"><a href=${pageContext.request.contextPath}"/productList">手机数码<span class="sr-only">(current)</span></a></li>
 					<li><a href="#">电脑办公</a></li>
 					<li><a href="#">电脑办公</a></li>
 					<li><a href="#">电脑办公</a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
+					<div class="form-group" style="position: relative;">
+						<input id="searchInput" type="text" class="form-control" onkeyup="searchProductsByWord(this)" placeholder="Search"/>
+						<div id="contentDiv" style="display: none;z-index: 1000;position: absolute ;width: 170px; height: 200px; background: white ; margin-top: 2px;"></div>
 					</div>
 					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
 			</div>
 		</div>
 	</nav>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+		function searchProductsByWord(obj) {
+			var word = $(obj).val();
+			var contentStr = "";
+			if(word != ""){
+                $.ajax({
+                    url:${pageContext.request.contextPath}"/searchWord",
+                    data:{"word": word},
+                    success:function (data) {
+                        for(var i = 0 ; i < data.length ; i++){
+                            contentStr += "<div onclick='clickFn(this)' onmouseover='overFn(this)' onmouseout='outFn(this)' style='font-size: 12px ; padding: 5px;'>"+data[i].pname+"</div>"
+                        }
+						$("#contentDiv").html(contentStr)
+						$("#contentDiv").css("display" , "block");
+                    },
+                    dataType:"json"
+                });
+			}else {
+                $("#contentDiv").css("display" , "none");
+            }
+
+        }
+        function overFn(obj) {
+			$(obj).css("background","#000fff");
+        }
+        function outFn(obj) {
+            $(obj).css("background","#fff");
+        }
+        function clickFn(obj) {
+			var pname = $(obj).html();
+			$("#searchInput").val(pname);
+            $("#contentDiv").css("display" , "none");
+        }
+	</script>
 </div>

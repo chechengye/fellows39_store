@@ -13,4 +13,15 @@ public class UserService implements IUserService {
     public User getUserByUserName(String userName) {
         return userDao.getUserByUserName(userName);
     }
+
+    /**
+     * 登陆操作，并返回用户
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
+    public User login(String username, String password) {
+        return userDao.login(username , password);
+    }
 }

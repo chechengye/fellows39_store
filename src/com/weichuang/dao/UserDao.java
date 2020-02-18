@@ -22,4 +22,15 @@ public class UserDao {
         }
         return user;
     }
+
+    public User login(String username, String password) {
+        String sql = "select u.uid , u.username , u.name from user u where username = ? and password = ?";
+        User user = null;
+        try {
+            user =  qr.query(sql , new BeanHandler<>(User.class) ,username , password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }

@@ -105,4 +105,14 @@ public class ProductService implements IProductService {
         pageBean.setProductList(productList);
         return pageBean;
     }
+
+    /**
+     * 根据关键字模糊查询商品
+     * @param word
+     * @return
+     */
+    @Override
+    public List<Product> getProductListByWord(String word) {
+        return productDao.getProductListByWord(word);
+    }
 }

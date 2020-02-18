@@ -21,4 +21,6 @@ public interface IProductService {
     List<Product> getProductListByCondition(Condition condition);
 
     PageBean getPageBeanByCurrentPageAndMaxCount(String currentPage, int maxCount);
+
+    List<Product> getProductListByWord(String word);
 }

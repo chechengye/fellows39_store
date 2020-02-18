@@ -125,4 +125,15 @@ public class ProductDao {
         }
         return Collections.emptyList();
     }
+
+    public List<Product> getProductListByWord(String word) {
+        String sql = "select p.pid , p.pname , p.market_price as marketPrice , p.shop_price as shopPrice  ,  p.pimage , p.pdesc , p.cid , p.is_hot as isHot from product p where p.pname like ? limit 0 , 6";
+        try {
+            List<Product> productList = qr.query(sql, new BeanListHandler<>(Product.class), "%" + word + "%");
+            return productList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 }
